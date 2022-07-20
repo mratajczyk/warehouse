@@ -1,0 +1,16 @@
+# Base config with reasonable defaults
+API_TITLE: "Warehouse API"
+API_VERSION: v1
+OPENAPI_VERSION: 3.0.2
+
+OPENAPI_URL_PREFIX: api
+OPENAPI_JSON_PATH: openapi.json
+
+# Reasonable defaults for database connection
+# Inject database credentials using environmental variables
+DATABASE_USER: postgres
+DATABASE_PASSWORD: postgres
+
+DATABASE_NAME: warehouse
+DATABASE_HOST: localhost
+DATABASE_PORT: 5432
