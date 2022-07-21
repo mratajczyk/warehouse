@@ -15,6 +15,7 @@ Flask-Cors = "^3.0.10"
 toml = "^0.10.2"
 PyYAML = "^6.0"
 pytest-mock = "^3.8.2"
+pytest-cov = "^3.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"

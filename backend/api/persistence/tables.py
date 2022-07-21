@@ -7,6 +7,7 @@ from sqlalchemy import (
     BigInteger,
     UniqueConstraint,
     create_engine,
+    ForeignKey,
 )
 from sqlalchemy.orm import sessionmaker
 
@@ -17,7 +18,7 @@ metadata = MetaData()
 articles = Table(
     "articles",
     metadata,
-    Column("art_id", Integer, primary_key=True),
+    Column("article_id", Integer, primary_key=True),
     Column("name", Text, nullable=False),
 )
 
@@ -32,8 +33,9 @@ products = Table(
 products_articles = Table(
     "products_articles",
     metadata,
-    Column("product_id", BigInteger, nullable=False),
-    Column("article_id", Integer, nullable=False),
+    Column("product_id", BigInteger, ForeignKey("products.product_id"), nullable=False),
+    Column("article_id", Integer, ForeignKey("articles.article_id"), nullable=False),
+    Column("amount", Integer, nullable=False),
     UniqueConstraint("product_id", "article_id", name="uix_1"),
 )
 
@@ -45,4 +47,9 @@ def get_connection_url():
     )
 
 
-SESSION_FACTORY = sessionmaker(bind=create_engine(get_connection_url()))
+def get_engine():
+    """Helper function for retrieving instance of database Engine"""
+    return create_engine(get_connection_url())
+
+
+SESSION_FACTORY = sessionmaker(bind=get_engine())
