@@ -5,7 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Build tests
+        run: docker-compose build
       - name: Run database
         run: docker-compose up -d db
       - name: Run tests
-        run: docker-compose up --build --exit-code-from backend-test backend-test
+        run: docker-compose up --exit-code-from backend-test backend-test
