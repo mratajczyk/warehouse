@@ -6,11 +6,17 @@ OPENAPI_VERSION: 3.0.2
 OPENAPI_URL_PREFIX: api
 OPENAPI_JSON_PATH: openapi.json
 
-# Reasonable defaults for database connection
-# Inject database credentials using environmental variables
+# Reasonable defaults
+# Inject credentials using environmental variables from secure secret store
 DATABASE_USER: postgres
 DATABASE_PASSWORD: postgres
 
 DATABASE_NAME: warehouse
 DATABASE_HOST: localhost
 DATABASE_PORT: 5432
+
+BLOB_STORAGE_HOST: localhost
+BLOB_STORAGE_PORT: 9000
+BLOB_STORAGE_ACCESS_KEY: minio
+BLOB_STORAGE_ACCESS_SECRET: minio-secret
+BLOB_STORAGE_BUCKET: warehouse-import-files

@@ -1,10 +1,9 @@
-import toml
 from flask import Flask
 from flask_cors import CORS
 from flask_smorest import Api
 
 from api.config.read import CONFIG
-from api.persistence.tables import SESSION_FACTORY
+from api.persistence.connection import SESSION_FACTORY
 
 
 def create_application() -> Flask:

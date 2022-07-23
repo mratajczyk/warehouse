@@ -2,7 +2,7 @@ import pytest
 from alembic.command import upgrade as alembic_upgrade, downgrade as alembic_downgrade
 from alembic.config import Config as AlembicConfig
 
-from api.persistence.tables import SESSION_FACTORY
+from api.persistence.connection import SESSION_FACTORY
 
 alembic_config = AlembicConfig("alembic.ini")
 
@@ -38,6 +38,7 @@ def dump_table(session):
 
 @pytest.fixture(autouse=False)
 def example_import_data():
+    """Fixture providing data structured in import format"""
     return {
         "inventory": [
             {"art_id": "1", "name": "leg", "stock": "12"},

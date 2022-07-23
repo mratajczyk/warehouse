@@ -24,9 +24,9 @@ def transform_import_data(
     products_articles = []
 
     for item in json_content.get("inventory", []):
-        articles.append(Article(article_id=int(item["art_id"]), name=item["name"]))
+        articles.append(Article(article_id=item["article_id"], name=item["name"]))
         stock_updates.append(
-            StockUpdate(article_id=int(item["art_id"]), current=int(item["stock"]))
+            StockUpdate(article_id=item["article_id"], current=item["stock"])
         )
 
     for product in json_content.get("products", []):
@@ -36,8 +36,8 @@ def transform_import_data(
             products_articles.append(
                 ProductArticle(
                     product_id=product_id,
-                    article_id=int(article_relation["art_id"]),
-                    amount=int(article_relation["amount_of"]),
+                    article_id=article_relation["article_id"],
+                    amount=article_relation["amount"],
                 )
             )
 

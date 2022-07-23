@@ -1,7 +1,11 @@
 import pytest
 
 from api.schemas.internal import Article, Product, ProductArticle
-from api.services.inventory import update_inventory, UpdateInventoryException
+from api.services.inventory import (
+    update_inventory,
+    UpdateInventoryException,
+    run_update_inventory,
+)
 
 from api.persistence.tables import (
     products as products_table,
@@ -119,17 +123,13 @@ def test_update_product_contains_exception(
         )
 
 
-def test_update_on_import_data(database, session, dump_table, example_import_data):
+def test_run_update_inventory(database, session, dump_table, example_import_data):
     """
-    GIVEN update_inventory and transform_import_data functions
+    GIVEN run_update_inventory functions
     WHEN updating inventory using data coming from import
     THEN check if inventory was created properly in database
     """
-    articles, products, products_articles, stock_updates = transform_import_data(
-        example_import_data
-    )
-
-    update_inventory(articles, products, products_articles)
+    run_update_inventory(example_import_data)
 
     inserted_articles = dump_table(articles_table)
     inserted_products = dump_table(products_table)

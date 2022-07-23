@@ -17,4 +17,12 @@ services:
       CONFIG_DATABASE_HOST: db
     depends_on:
       - db
-
+  minio:
+    image: bitnami/minio:2022.7.17-debian-11-r1
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_DEFAULT_BUCKETS: warehouse-import-files
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio-secret

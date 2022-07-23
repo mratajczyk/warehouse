@@ -8,7 +8,8 @@ from alembic import context
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-from api.persistence.tables import metadata, get_connection_url
+from api.persistence.tables import metadata
+from api.persistence.connection import get_connection_url
 
 config = context.config
 

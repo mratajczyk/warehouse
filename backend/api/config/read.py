@@ -19,6 +19,11 @@ class ConfigStructure(TypedDict):
     DATABASE_NAME: str
     DATABASE_HOST: str
     DATABASE_PORT: str
+    BLOB_STORAGE_HOST: str
+    BLOB_STORAGE_PORT: str
+    BLOB_STORAGE_ACCESS_KEY: str
+    BLOB_STORAGE_ACCESS_SECRET: str
+    BLOB_STORAGE_BUCKET: str
 
 
 def read_from_file(name: str, path: str = base_config_dir) -> Optional[dict]:

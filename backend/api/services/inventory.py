@@ -1,16 +1,19 @@
 from typing import List
 
+from marshmallow import ValidationError
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from api.persistence.connection import SESSION_FACTORY
 from api.persistence.tables import (
     products as products_table,
     articles as articles_table,
-    SESSION_FACTORY,
-    products_articles,
+    products_articles as products_articles_table,
 )
+from api.schemas.external import ImportFile
 from api.schemas.internal import Article, Product, ProductArticle
+from api.services.perpare_import import transform_import_data
 
 
 class UpdateInventoryException(Exception):
@@ -21,7 +24,7 @@ class UpdateInventoryException(Exception):
 
 statement_products = insert(products_table)
 statement_articles = insert(articles_table)
-statement_products_articles = insert(products_articles)
+statement_products_articles = insert(products_articles_table)
 
 # Make statements to work as upsert
 statement_articles = statement_articles.on_conflict_do_nothing(
@@ -53,5 +56,27 @@ def update_inventory(
                     statement_products_articles.values(product_articles_data)
                 )
             session.commit()
-        except IntegrityError:
-            raise UpdateInventoryException
+        except IntegrityError as e:
+            raise UpdateInventoryException(e)
+
+
+def deserialize_incoming_data(data: dict) -> dict:
+    """Function that runs validation and deserialization of incoming data"""
+    return ImportFile().load(data)
+
+
+def run_update_inventory(data: bytes):
+    """Function that encapsulates whole process of importing data
+
+    :raises UpdateInventoryException: when non-recoverable problem with input data occurs
+    """
+    try:
+        # Transform and validate contents of json file to dictionary with internal key names
+        data = deserialize_incoming_data(data)
+    except ValidationError as e:
+        raise UpdateInventoryException(e)
+
+    # Prepare internal representations of import data
+    articles, products, products_articles, stock_updates = transform_import_data(data)
+    # Persist data in database
+    update_inventory(articles, products, products_articles)
