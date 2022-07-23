@@ -77,7 +77,7 @@ def test_deserialize_incoming_data(example_import_data):
 
 @pytest.mark.parametrize(
     "invalid_input",
-    [{}, {"products": [], "inventory": []}],
+    [{"products": ["Foo"], "inventory": []}, {"products": [], "inventory": ["Bar"]}],
 )
 def test_deserialize_incoming_data_validation_export(invalid_input):
     """
