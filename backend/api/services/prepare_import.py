@@ -1,7 +1,15 @@
+import datetime
 import hashlib
+import uuid
 from typing import Tuple, List
 
-from api.schemas.internal import Article, Product, ProductArticle, StockUpdate
+from api.schemas.internal import (
+    Article,
+    Product,
+    ProductArticle,
+    ImportStockUpdate,
+    StockUpdate,
+)
 
 
 def _hash_name(value: str) -> int:
@@ -13,11 +21,24 @@ def _hash_name(value: str) -> int:
     )
 
 
+def get_stock_updates(article_stocks: dict, import_state: List[ImportStockUpdate]):
+    """Function preparing StockUpdates for database insertion based on current Article Stocks adn data from import"""
+    return [
+        StockUpdate(
+            value=state["current"] - article_stocks.get(state["article_id"], 0),
+            update_id=uuid.uuid4(),
+            article_id=state["article_id"],
+            created_at=datetime.datetime.now(),
+            sale_id=None,
+        )
+        for state in import_state
+    ]
+
+
 def transform_import_data(
     json_content: dict,
-) -> Tuple[List[Article], List[Product], List[ProductArticle], List[StockUpdate]]:
+) -> Tuple[List[Article], List[Product], List[ProductArticle], List[ImportStockUpdate]]:
     """Transform incoming data to internal representations."""
-
     articles = []
     products = []
     stock_updates = []
@@ -26,7 +47,7 @@ def transform_import_data(
     for item in json_content.get("inventory", []):
         articles.append(Article(article_id=item["article_id"], name=item["name"]))
         stock_updates.append(
-            StockUpdate(article_id=item["article_id"], current=item["stock"])
+            ImportStockUpdate(article_id=item["article_id"], current=item["stock"])
         )
 
     for product in json_content.get("products", []):

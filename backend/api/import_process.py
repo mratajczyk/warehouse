@@ -63,4 +63,3 @@ if __name__ == "__main__":
     while True:
         scheduler.run_pending()
         time.sleep(1)
-

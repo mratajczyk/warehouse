@@ -1,6 +1,11 @@
-import pytest
+import datetime
+from unittest.mock import Mock
+from uuid import UUID
 
-from api.schemas.internal import Article, Product, ProductArticle
+import pytest
+from freezegun import freeze_time
+
+from api.schemas.internal import Article, Product, ProductArticle, ImportStockUpdate
 from api.services.inventory import (
     update_inventory,
     UpdateInventoryException,
@@ -11,8 +16,8 @@ from api.persistence.tables import (
     products as products_table,
     articles as articles_table,
     products_articles as products_articles_table,
+    stock_updates as stock_updates_table,
 )
-from api.services.perpare_import import transform_import_data
 
 insert_articles = [
     Article(article_id=1, name="Foo"),
@@ -54,7 +59,7 @@ def test_update(
     WHEN calling function and inserting inventory to empty database
     THEN check if inventory was created properly
     """
-    update_inventory(articles, products, [])
+    update_inventory(articles, products, [], [])
 
     inserted_articles = dump_table(articles_table)
     inserted_products = dump_table(products_table)
@@ -97,7 +102,7 @@ def test_update_product_contains(
         ProductArticle(product_id=2, article_id=2, amount=444),
     ]
 
-    update_inventory(articles, products, products_articles)
+    update_inventory(articles, products, products_articles, [])
     inserted_products_articles = dump_table(products_articles_table)
 
     assert inserted_products_articles == [(1, 1, 111), (1, 2, 222), (2, 2, 444)]
@@ -120,6 +125,7 @@ def test_update_product_contains_exception(
             [
                 ProductArticle(product_id=1, article_id=1, amount=111),
             ],
+            [],
         )
 
 
@@ -147,3 +153,73 @@ def test_run_update_inventory(database, session, dump_table, example_import_data
             (8554657820763869416, 3, 1),
         ],
     )
+
+
+def test_update_stock_updates(database, session, dump_table, mocker):
+    """
+    GIVEN update function for setting current inventory state
+    WHEN calling function and inserting Stock Updates
+    THEN check if Stock Updates were persisted properly
+    """
+    mocker.patch(
+        "api.services.inventory.get_stocks_for_articles", Mock(return_value={4: 5})
+    )
+    mocker.patch(
+        "api.services.prepare_import.uuid.uuid4",
+        Mock(
+            side_effect=[
+                UUID("75138e7b-37ac-436e-a403-e0bac1294c2b"),
+                UUID("d9b7e54a-6ed6-45e1-9a47-8ff3979ea000"),
+                UUID("ec2b035e-6cae-46e1-bd75-451f81236155"),
+                UUID("f7055876-aae9-46e1-9b7a-6c193d47408b"),
+            ]
+        ),
+    )
+    articles = [
+        Article(article_id=1, name="Foo"),
+        Article(article_id=2, name="Bar"),
+        Article(article_id=3, name="FooBar"),
+        Article(article_id=4, name="FooBar4"),
+    ]
+    with freeze_time("2022-01-01"):
+        update_inventory(
+            articles,
+            [],
+            [],
+            [
+                ImportStockUpdate(article_id=1, current=100),
+                ImportStockUpdate(article_id=2, current=200),
+                ImportStockUpdate(article_id=3, current=300),
+                ImportStockUpdate(article_id=4, current=0),
+            ],
+        )
+    assert dump_table(stock_updates_table) == [
+        (
+            UUID("75138e7b-37ac-436e-a403-e0bac1294c2b"),
+            1,
+            None,
+            100,
+            datetime.datetime(2022, 1, 1, 0, 0),
+        ),
+        (
+            UUID("d9b7e54a-6ed6-45e1-9a47-8ff3979ea000"),
+            2,
+            None,
+            200,
+            datetime.datetime(2022, 1, 1, 0, 0),
+        ),
+        (
+            UUID("ec2b035e-6cae-46e1-bd75-451f81236155"),
+            3,
+            None,
+            300,
+            datetime.datetime(2022, 1, 1, 0, 0),
+        ),
+        (
+            UUID("f7055876-aae9-46e1-9b7a-6c193d47408b"),
+            4,
+            None,
+            -5,
+            datetime.datetime(2022, 1, 1, 0, 0),
+        ),
+    ]

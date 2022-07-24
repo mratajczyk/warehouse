@@ -1,3 +1,5 @@
+import enum
+
 from sqlalchemy import (
     MetaData,
     Table,
@@ -7,9 +9,17 @@ from sqlalchemy import (
     BigInteger,
     UniqueConstraint,
     ForeignKey,
+    DateTime,
 )
+from sqlalchemy.dialects.postgresql import UUID
 
 metadata = MetaData()
+
+
+class StockUpdateEnum(enum.Enum):
+    IMPORT = "Set by data import to warehouse"
+    SALE = "Article was sold in that quantity"
+
 
 articles = Table(
     "articles",
@@ -33,4 +43,23 @@ products_articles = Table(
     Column("article_id", Integer, ForeignKey("articles.article_id"), nullable=False),
     Column("amount", Integer, nullable=False),
     UniqueConstraint("product_id", "article_id", name="uix_1"),
+)
+
+sales = Table(
+    "sales",
+    metadata,
+    Column("sale_id", UUID(as_uuid=True), primary_key=True),
+    Column("product_id", BigInteger, ForeignKey("products.product_id"), nullable=False),
+    Column("amount", Integer, nullable=False),
+)
+
+
+stock_updates = Table(
+    "stock_updates",
+    metadata,
+    Column("update_id", UUID(as_uuid=True), primary_key=True),
+    Column("article_id", Integer, ForeignKey("articles.article_id"), nullable=False),
+    Column("sale_id", UUID(as_uuid=True), ForeignKey("sales.sale_id"), nullable=True),
+    Column("value", Integer, nullable=False),
+    Column("created_at", DateTime, nullable=False),
 )

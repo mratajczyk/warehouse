@@ -1,8 +1,12 @@
+from datetime import datetime
+from unittest.mock import Mock
+
 import pytest
 from marshmallow import ValidationError
 
+from api.schemas.internal import ImportStockUpdate
 from api.services.inventory import deserialize_incoming_data
-from api.services.perpare_import import transform_import_data
+from api.services.prepare_import import transform_import_data, get_stock_updates
 
 loaded_import_data = {
     "inventory": [
@@ -87,3 +91,44 @@ def test_deserialize_incoming_data_validation_export(invalid_input):
     """
     with pytest.raises(ValidationError):
         deserialize_incoming_data(invalid_input)
+
+
+@pytest.mark.freeze_time("2022-01-01")
+def test_get_stock_updates(mocker):
+    """
+    GIVEN get_stock_updates function
+    WHEN calling it with current stocks and values coming from import
+    THEN check returned updates for database are correct
+    """
+    mocker.patch(
+        "api.services.prepare_import.uuid.uuid4", Mock(return_value="mocked-uuid")
+    )
+    current = {1: 100, 2: 200, 3: 300}
+    import_state = [
+        ImportStockUpdate(article_id=1, current=200),
+        ImportStockUpdate(article_id=2, current=50),
+        ImportStockUpdate(article_id=3, current=300),
+    ]
+    assert get_stock_updates(current, import_state) == [
+        {
+            "value": 100,
+            "update_id": "mocked-uuid",
+            "article_id": 1,
+            "created_at": datetime(2022, 1, 1, 0, 0),
+            "sale_id": None,
+        },
+        {
+            "value": -150,
+            "update_id": "mocked-uuid",
+            "article_id": 2,
+            "created_at": datetime(2022, 1, 1, 0, 0),
+            "sale_id": None,
+        },
+        {
+            "value": 0,
+            "update_id": "mocked-uuid",
+            "article_id": 3,
+            "created_at": datetime(2022, 1, 1, 0, 0),
+            "sale_id": None,
+        },
+    ]

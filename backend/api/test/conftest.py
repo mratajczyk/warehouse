@@ -1,8 +1,19 @@
+import uuid
+from datetime import datetime
+
 import pytest
 from alembic.command import upgrade as alembic_upgrade, downgrade as alembic_downgrade
 from alembic.config import Config as AlembicConfig
+from sqlalchemy import insert
 
 from api.persistence.connection import SESSION_FACTORY
+from api.persistence.tables import (
+    products as products_table,
+    articles as articles_table,
+    stock_updates as stock_updates_table,
+    sales as sales_table,
+)
+from api.schemas.internal import Article, Product, Sale, StockUpdate
 
 alembic_config = AlembicConfig("alembic.ini")
 
@@ -34,6 +45,79 @@ def dump_table(session):
         return session.query(table).order_by(*table.columns).all()
 
     yield _run
+
+
+@pytest.fixture(autouse=False)
+def set_example_database_content(session):
+    """Fixture that sets database in valid state for testing"""
+    sale = Sale(sale_id=uuid.uuid4(), product_id=1, amount=1)
+    session.begin()
+    session.execute(
+        insert(products_table).values(
+            [
+                Product(product_id=1, name="Product1"),
+            ]
+        )
+    )
+    session.execute(
+        insert(articles_table).values(
+            [
+                Article(article_id=1, name="Art1"),
+                Article(article_id=2, name="Art2"),
+                Article(article_id=3, name="Art3"),
+            ]
+        )
+    )
+    session.execute(insert(sales_table).values([sale]))
+    session.execute(
+        insert(stock_updates_table).values(
+            [
+                StockUpdate(
+                    article_id=1,
+                    value=10,
+                    update_id=uuid.uuid4(),
+                    sale_id=None,
+                    created_at=datetime.now(),
+                ),
+                StockUpdate(
+                    article_id=2,
+                    value=5,
+                    update_id=uuid.uuid4(),
+                    sale_id=None,
+                    created_at=datetime.now(),
+                ),
+                StockUpdate(
+                    article_id=3,
+                    value=3,
+                    update_id=uuid.uuid4(),
+                    sale_id=None,
+                    created_at=datetime.now(),
+                ),
+                StockUpdate(
+                    article_id=1,
+                    value=-5,
+                    update_id=uuid.uuid4(),
+                    sale_id=sale["sale_id"],
+                    created_at=datetime.now(),
+                ),
+                StockUpdate(
+                    article_id=2,
+                    value=-2,
+                    update_id=uuid.uuid4(),
+                    sale_id=sale["sale_id"],
+                    created_at=datetime.now(),
+                ),
+                StockUpdate(
+                    article_id=3,
+                    value=-2,
+                    update_id=uuid.uuid4(),
+                    sale_id=sale["sale_id"],
+                    created_at=datetime.now(),
+                ),
+            ]
+        )
+    )
+    session.commit()
 
 
 @pytest.fixture(autouse=False)

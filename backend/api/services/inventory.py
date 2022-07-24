@@ -10,10 +10,12 @@ from api.persistence.tables import (
     products as products_table,
     articles as articles_table,
     products_articles as products_articles_table,
+    stock_updates as stock_updates_table,
 )
 from api.schemas.external import ImportFile
-from api.schemas.internal import Article, Product, ProductArticle
-from api.services.perpare_import import transform_import_data
+from api.schemas.internal import Article, Product, ProductArticle, ImportStockUpdate
+from api.services.prepare_import import transform_import_data, get_stock_updates
+from api.services.stocks import get_stocks_for_articles
 
 
 class UpdateInventoryException(Exception):
@@ -25,6 +27,7 @@ class UpdateInventoryException(Exception):
 statement_products = insert(products_table)
 statement_articles = insert(articles_table)
 statement_products_articles = insert(products_articles_table)
+statement_stock_updates = insert(stock_updates_table)
 
 # Make statements to work as upsert
 statement_articles = statement_articles.on_conflict_do_nothing(
@@ -43,9 +46,14 @@ def update_inventory(
     articles_data: List[Article],
     products_data: List[Product],
     product_articles_data: List[ProductArticle],
+    stock_updated_data: List[ImportStockUpdate],
 ):
     with SESSION_FACTORY() as session:
         session: Session
+        article_stocks = get_stocks_for_articles(
+            session, [art["article_id"] for art in articles_data]
+        )
+        stock_updates = get_stock_updates(article_stocks, stock_updated_data)
         try:
             if articles_data:
                 session.execute(statement_articles.values(articles_data))
@@ -55,6 +63,8 @@ def update_inventory(
                 session.execute(
                     statement_products_articles.values(product_articles_data)
                 )
+            if stock_updates:
+                session.execute(statement_stock_updates.values(stock_updates))
             session.commit()
         except IntegrityError as e:
             raise UpdateInventoryException(e)
@@ -79,4 +89,4 @@ def run_update_inventory(data: bytes):
     # Prepare internal representations of import data
     articles, products, products_articles, stock_updates = transform_import_data(data)
     # Persist data in database
-    update_inventory(articles, products, products_articles)
+    update_inventory(articles, products, products_articles, stock_updates)
