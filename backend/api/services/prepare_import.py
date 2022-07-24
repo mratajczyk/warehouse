@@ -1,13 +1,13 @@
 import datetime
 import hashlib
 import uuid
-from typing import Tuple, List
+from typing import List, Tuple
 
 from api.schemas.internal import (
     Article,
+    ImportStockUpdate,
     Product,
     ProductArticle,
-    ImportStockUpdate,
     StockUpdate,
 )
 

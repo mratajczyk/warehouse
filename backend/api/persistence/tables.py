@@ -1,15 +1,15 @@
 import enum
 
 from sqlalchemy import (
+    BigInteger,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
     MetaData,
     Table,
-    Column,
-    Integer,
     Text,
-    BigInteger,
     UniqueConstraint,
-    ForeignKey,
-    DateTime,
 )
 from sqlalchemy.dialects.postgresql import UUID
 

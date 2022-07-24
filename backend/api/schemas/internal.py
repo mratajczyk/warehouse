@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TypedDict, List, Optional
+from typing import List, Optional, TypedDict
 from uuid import UUID
 
 

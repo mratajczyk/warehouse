@@ -5,18 +5,15 @@ from uuid import UUID
 import pytest
 from freezegun import freeze_time
 
-from api.schemas.internal import Article, Product, ProductArticle, ImportStockUpdate
+from api.persistence.tables import articles as articles_table
+from api.persistence.tables import products as products_table
+from api.persistence.tables import products_articles as products_articles_table
+from api.persistence.tables import stock_updates as stock_updates_table
+from api.schemas.internal import Article, ImportStockUpdate, Product, ProductArticle
 from api.services.inventory import (
-    update_inventory,
     UpdateInventoryException,
     run_update_inventory,
-)
-
-from api.persistence.tables import (
-    products as products_table,
-    articles as articles_table,
-    products_articles as products_articles_table,
-    stock_updates as stock_updates_table,
+    update_inventory,
 )
 
 insert_articles = [

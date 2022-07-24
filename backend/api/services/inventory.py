@@ -6,15 +6,13 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from api.persistence.connection import SESSION_FACTORY
-from api.persistence.tables import (
-    products as products_table,
-    articles as articles_table,
-    products_articles as products_articles_table,
-    stock_updates as stock_updates_table,
-)
+from api.persistence.tables import articles as articles_table
+from api.persistence.tables import products as products_table
+from api.persistence.tables import products_articles as products_articles_table
+from api.persistence.tables import stock_updates as stock_updates_table
 from api.schemas.external import ImportFile
-from api.schemas.internal import Article, Product, ProductArticle, ImportStockUpdate
-from api.services.prepare_import import transform_import_data, get_stock_updates
+from api.schemas.internal import Article, ImportStockUpdate, Product, ProductArticle
+from api.services.prepare_import import get_stock_updates, transform_import_data
 from api.services.stocks import get_stocks_for_articles
 
 

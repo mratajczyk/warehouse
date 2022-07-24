@@ -1,8 +1,9 @@
-from unittest.mock import mock_open as mock_file_open_helper, call, Mock
+from unittest.mock import Mock, call
+from unittest.mock import mock_open as mock_file_open_helper
 
 import pytest
 
-from api.config.read import read_from_file, prepare
+from api.config.read import prepare, read_from_file
 
 
 def test_read_from_file(mocker):

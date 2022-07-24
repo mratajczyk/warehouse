@@ -1,7 +1,6 @@
 from typing import Optional
 
 from minio import Minio
-
 from minio.datatypes import Object
 
 from api.config.read import CONFIG
