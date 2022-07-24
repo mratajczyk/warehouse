@@ -126,19 +126,40 @@ def test_update_product_contains_exception(
         )
 
 
-def test_run_update_inventory(database, session, dump_table, example_import_data):
+def test_run_update_inventory(
+    database, session, dump_table, example_import_data, mocker
+):
     """
     GIVEN run_update_inventory functions
     WHEN updating inventory using data coming from import
     THEN check if inventory was created properly in database
     """
-    run_update_inventory(example_import_data)
+    mocker.patch(
+        "api.services.prepare_import.uuid.uuid4",
+        Mock(
+            side_effect=[
+                UUID("75138e7b-37ac-436e-a403-e0bac1294c2b"),
+                UUID("d9b7e54a-6ed6-45e1-9a47-8ff3979ea000"),
+                UUID("ec2b035e-6cae-46e1-bd75-451f81236155"),
+                UUID("f7055876-aae9-46e1-9b7a-6c193d47408b"),
+            ]
+        ),
+    )
+
+    with freeze_time("2022-01-01"):
+        run_update_inventory(example_import_data)
 
     inserted_articles = dump_table(articles_table)
     inserted_products = dump_table(products_table)
     inserted_products_articles = dump_table(products_articles_table)
+    inserted_stock_updates = dump_table(stock_updates_table)
 
-    assert (inserted_articles, inserted_products, inserted_products_articles) == (
+    assert (
+        inserted_articles,
+        inserted_products,
+        inserted_products_articles,
+        inserted_stock_updates,
+    ) == (
         [(1, "leg"), (2, "screw"), (3, "seat"), (4, "table top")],
         [(2582353817615226871, "Dinning Table"), (8554657820763869416, "Dining Chair")],
         [
@@ -148,6 +169,36 @@ def test_run_update_inventory(database, session, dump_table, example_import_data
             (8554657820763869416, 1, 4),
             (8554657820763869416, 2, 8),
             (8554657820763869416, 3, 1),
+        ],
+        [
+            (
+                UUID("75138e7b-37ac-436e-a403-e0bac1294c2b"),
+                1,
+                None,
+                12,
+                datetime.datetime(2022, 1, 1, 0, 0),
+            ),
+            (
+                UUID("d9b7e54a-6ed6-45e1-9a47-8ff3979ea000"),
+                2,
+                None,
+                17,
+                datetime.datetime(2022, 1, 1, 0, 0),
+            ),
+            (
+                UUID("ec2b035e-6cae-46e1-bd75-451f81236155"),
+                3,
+                None,
+                2,
+                datetime.datetime(2022, 1, 1, 0, 0),
+            ),
+            (
+                UUID("f7055876-aae9-46e1-9b7a-6c193d47408b"),
+                4,
+                None,
+                1,
+                datetime.datetime(2022, 1, 1, 0, 0),
+            ),
         ],
     )
 

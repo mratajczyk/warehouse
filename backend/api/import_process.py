@@ -14,7 +14,7 @@ logger.add(sys.stderr, level="INFO")
 
 
 def process_heartbeat():
-    """Log heartbea
+    """Log heart-beat
     @TODO - consider checking health of process (database connection, storage connection)
     """
     logger.info("\u2764\uFE0F")
