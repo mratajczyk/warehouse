@@ -1,7 +1,7 @@
 from api.services.stocks import get_stocks_for_articles
 
 
-def test_get_stocks_for_articles(database, session, set_example_database_content):
+def test_get_stocks_for_articles(database, session, set_example_database_sale):
     """
     GIVEN get_stocks_for_articles function
     WHEN calling it with list of article_id's

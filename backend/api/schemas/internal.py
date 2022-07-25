@@ -1,6 +1,12 @@
 from datetime import datetime
-from typing import List, Optional, TypedDict
+from typing import Optional, TypedDict
 from uuid import UUID
+
+"""
+List of internal data structures.
+
+@TODO - consider using immutable type like frozen dataclass
+"""
 
 
 class Article(TypedDict):

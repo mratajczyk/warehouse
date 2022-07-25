@@ -15,12 +15,6 @@ from sqlalchemy.dialects.postgresql import UUID
 
 metadata = MetaData()
 
-
-class StockUpdateEnum(enum.Enum):
-    IMPORT = "Set by data import to warehouse"
-    SALE = "Article was sold in that quantity"
-
-
 articles = Table(
     "articles",
     metadata,

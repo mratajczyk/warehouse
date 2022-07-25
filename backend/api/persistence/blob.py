@@ -9,7 +9,7 @@ client = Minio(
     f"{CONFIG['BLOB_STORAGE_HOST']}:{CONFIG['BLOB_STORAGE_PORT']}",
     access_key=CONFIG["BLOB_STORAGE_ACCESS_KEY"],
     secret_key=CONFIG["BLOB_STORAGE_ACCESS_SECRET"],
-    secure=CONFIG["BLOB_STORAGE_HOST"] != "localhost",
+    secure=CONFIG["BLOB_STORAGE_ACCESS_SECURE"],
 )
 
 # Initialise bucket

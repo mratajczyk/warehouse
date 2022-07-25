@@ -12,7 +12,8 @@ from api.persistence.tables import articles as articles_table
 from api.persistence.tables import products as products_table
 from api.persistence.tables import sales as sales_table
 from api.persistence.tables import stock_updates as stock_updates_table
-from api.schemas.internal import Article, Product, Sale, StockUpdate
+from api.persistence.tables import products_articles as products_articles_table
+from api.schemas.internal import Article, Product, Sale, StockUpdate, ProductArticle
 
 alembic_config = AlembicConfig("alembic.ini")
 
@@ -47,26 +48,46 @@ def dump_table(session):
 
 
 @pytest.fixture(autouse=False)
-def set_example_database_content(session):
-    """Fixture that sets database in valid state for testing"""
-    sale = Sale(sale_id=uuid.uuid4(), product_id=1, amount=1)
+def set_example_database_products_articles(session):
+    """Fixture that sets database in with Products/Articles/ProductsArticles for testing"""
     session.begin()
     session.execute(
         insert(products_table).values(
             [
-                Product(product_id=1, name="Product1"),
+                Product(product_id=1, name="Dining Chair"),
+                Product(product_id=2, name="Dinning Table"),
             ]
         )
     )
     session.execute(
         insert(articles_table).values(
             [
-                Article(article_id=1, name="Art1"),
-                Article(article_id=2, name="Art2"),
-                Article(article_id=3, name="Art3"),
+                Article(article_id=1, name="leg"),
+                Article(article_id=2, name="screw"),
+                Article(article_id=3, name="seat"),
+                Article(article_id=4, name="table_top"),
             ]
         )
     )
+    session.execute(
+        insert(products_articles_table).values(
+            [
+                ProductArticle(product_id=1, article_id=1, amount=4),
+                ProductArticle(product_id=1, article_id=2, amount=8),
+                ProductArticle(product_id=1, article_id=3, amount=1),
+                ProductArticle(product_id=2, article_id=1, amount=4),
+                ProductArticle(product_id=2, article_id=2, amount=8),
+                ProductArticle(product_id=2, article_id=3, amount=1),
+            ]
+        )
+    )
+    session.commit()
+
+
+@pytest.fixture(autouse=False)
+def set_example_database_sale(session, set_example_database_products_articles):
+    """Fixture that sets database in with Sale for testing"""
+    sale = Sale(sale_id=uuid.uuid4(), product_id=1, amount=1)
     session.execute(insert(sales_table).values([sale]))
     session.execute(
         insert(stock_updates_table).values(
@@ -116,7 +137,6 @@ def set_example_database_content(session):
             ]
         )
     )
-    session.commit()
 
 
 @pytest.fixture(autouse=False)

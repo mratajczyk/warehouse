@@ -24,6 +24,7 @@ class ConfigStructure(TypedDict):
     BLOB_STORAGE_ACCESS_KEY: str
     BLOB_STORAGE_ACCESS_SECRET: str
     BLOB_STORAGE_BUCKET: str
+    BLOB_STORAGE_ACCESS_SECURE: bool
 
 
 def read_from_file(name: str, path: str = base_config_dir) -> Optional[dict]:

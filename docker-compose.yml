@@ -1,22 +1,25 @@
-version: '3.1'
+version: '3.6'
 services:
-  db:
+  db-test:
     image: postgres:14
     restart: always
-    #command: ["postgres", "-c", "log_statement=all"]
     environment:
       POSTGRES_DB: warehouse
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-  backend-test:
+    profiles:
+      - backend-tests
+  pytest:
     build:
       context: backend
       dockerfile: deployment/test/Dockerfile
     environment:
-      CONFIG_DATABASE_HOST: db
+      CONFIG_DATABASE_HOST: db-test
     depends_on:
-      - db
+      - db-test
+    profiles:
+      - backend-tests
   minio:
     image: bitnami/minio:2022.7.17-debian-11-r1
     ports:
@@ -26,3 +29,51 @@ services:
       MINIO_DEFAULT_BUCKETS: warehouse-import-files
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio-secret
+    profiles:
+      - app
+  db-app:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: warehouse
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    profiles:
+      - app
+  api:
+    build:
+      context: backend
+      dockerfile: deployment/production/Dockerfile
+    environment:
+      CONFIG_DATABASE_HOST: db-app
+      CONFIG_DATABASE_PORT: 5432
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db-app
+    profiles:
+      - app
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    ports:
+      - "8080:8080"
+    environment:
+      API_URL: http://localhost:5000/api/openapi.json
+    profiles:
+      - app
+  import-process:
+    build:
+      context: backend
+      dockerfile: deployment/production/Dockerfile
+    entrypoint: ["poetry", "run", "python", "api/import_process.py"]
+    environment:
+      CONFIG_BLOB_STORAGE_HOST: minio
+      CONFIG_DATABASE_HOST: db-app
+      SKIP_MIGRATIONS: 1
+    depends_on:
+      - api
+      - db-app
+    profiles:
+      - app
