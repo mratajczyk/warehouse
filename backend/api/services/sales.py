@@ -22,7 +22,7 @@ def _generate_sale_id():
     return uuid.uuid4()
 
 
-def make_sale(product_id: int, amount: int):
+def register_sale(product_id: int, amount: int):
     """Process sale of Product"""
 
     if amount < 1:
@@ -60,4 +60,4 @@ def make_sale(product_id: int, amount: int):
 
 
 if __name__ == "__main__":
-    make_sale(1, 2)
+    register_sale(1, 2)

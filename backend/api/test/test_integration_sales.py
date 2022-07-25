@@ -10,14 +10,14 @@ from api.persistence.tables import (
     sales as sales_table,
     stock_updates as stock_updates_table,
 )
-from api.services.sales import make_sale, ProductNotFound
+from api.services.sales import register_sale, ProductNotFound
 
 
-def test_make_sale(
+def test_register_sale(
     database, set_example_database_products_articles, dump_table, mocker
 ):
     """
-    GIVEN make_sale function
+    GIVEN register_sale function
     WHEN calling arguments for Product and amount
     THEN check if sale have been properly persisted
     """
@@ -35,7 +35,7 @@ def test_make_sale(
     )
 
     with freeze_time("2022-01-01"):
-        make_sale(1, 1)
+        register_sale(1, 1)
 
     assert dump_table(sales_table), dump_table(stock_updates_table) == (
         [(sale_id, 1, 1)],
@@ -75,13 +75,13 @@ def test_make_sale(
         ((999, 1), ProductNotFound),
     ],
 )
-def test_make_sale_invalid(
+def test_register_sale_invalid(
     database, set_example_database_products_articles, inputs, exception
 ):
     """
-    GIVEN make_sale function
+    GIVEN register_sale function
     WHEN calling with invalid arguments
     THEN check if proper execution is raised
     """
     with pytest.raises(exception):
-        make_sale(*inputs)
+        register_sale(*inputs)

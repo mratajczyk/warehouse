@@ -8,6 +8,17 @@
 * [PostgreSQL](https://www.postgresql.org/) database for storing inventory and handling transactions
 * [SQLAlchemy](https://www.sqlalchemy.org/) used in Python for handling database logic
 
+## Components
+
+This monorepo contains following components:
+
+* [backend](backend/README.md)
+
+## Configuration
+
+No need to configure anything for local deployment, everything runs with reasonable
+defaults.
+
 ## Running 
 
 Requirement: Docker Compose `1.28.0` 

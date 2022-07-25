@@ -42,16 +42,7 @@ def read_from_env(prefix=ENVIRONMENT_CONFIG_PREFIX) -> dict:
 
 
 def prepare() -> ConfigStructure:
-    """Helper function preparing configuration for application:
-
-    1. base.yaml - basic configuration for application that is not expected to change
-    in different environments, values that can be safely committed to repository
-
-    2. config.yaml - configuration specific for different environments, usually injected
-    during deployment, overwrites values from base.yaml
-
-    3. environmental variables - used to pass secrets injected during deployment
-    """
+    """Helper function preparing configuration for application"""
     base = read_from_file("base.yaml")
     overwrite = read_from_file("config.yaml", path=CONFIG_DIR)
     environment = read_from_env()

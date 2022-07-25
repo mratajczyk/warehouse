@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
 
 
 class Inventory(Schema):
@@ -20,3 +20,21 @@ class Product(Schema):
 class ImportFile(Schema):
     inventory = fields.List(fields.Nested(Inventory()), required=False)
     products = fields.List(fields.Nested(Product()), required=False)
+
+
+class MessageResponse(Schema):
+    message = fields.String()
+
+
+class Sale(Schema):
+    amount = fields.Integer(validate=validate.Range(min=1, max=999))
+
+
+class ProductStock(Schema):
+    product_id = fields.Integer()
+    name = fields.String()
+    stock = fields.Integer()
+
+
+class ProductsResponse(Schema):
+    products = fields.List(fields.Nested(ProductStock()))

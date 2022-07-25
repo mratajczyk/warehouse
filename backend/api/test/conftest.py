@@ -77,7 +77,7 @@ def set_example_database_products_articles(session):
                 ProductArticle(product_id=1, article_id=3, amount=1),
                 ProductArticle(product_id=2, article_id=1, amount=4),
                 ProductArticle(product_id=2, article_id=2, amount=8),
-                ProductArticle(product_id=2, article_id=3, amount=1),
+                ProductArticle(product_id=2, article_id=4, amount=1),
             ]
         )
     )
