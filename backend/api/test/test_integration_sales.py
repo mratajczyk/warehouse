@@ -35,28 +35,28 @@ def test_register_sale(
     )
 
     with freeze_time("2022-01-01"):
-        register_sale(1, 1)
+        register_sale("1", 1)
 
     assert dump_table(sales_table), dump_table(stock_updates_table) == (
-        [(sale_id, 1, 1)],
+        [(sale_id, "1", 1)],
         [
             (
                 UUID("1060d9a7-ea4e-4235-9518-bbf888387694"),
-                3,
+                "3",
                 sale_id,
                 -1,
                 datetime.datetime(2022, 1, 1, 0, 0),
             ),
             (
                 UUID("bf881d67-bb22-4f1c-89ab-64ca4966f631"),
-                2,
+                "2",
                 sale_id,
                 -8,
                 datetime.datetime(2022, 1, 1, 0, 0),
             ),
             (
                 UUID("d7045697-530c-4a0d-a05a-19336734481e"),
-                1,
+                "1",
                 sale_id,
                 -4,
                 datetime.datetime(2022, 1, 1, 0, 0),
@@ -69,10 +69,10 @@ def test_register_sale(
     "inputs, exception",
     [
         # Invalid amount
-        ((1, 0), ValueError),
-        ((1, -1), ValueError),
+        (("1", 0), ValueError),
+        (("1", -1), ValueError),
         # Not existing Product
-        ((999, 1), ProductNotFound),
+        (("999", 1), ProductNotFound),
     ],
 )
 def test_register_sale_invalid(

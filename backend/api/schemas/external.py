@@ -2,13 +2,13 @@ from marshmallow import Schema, fields, validate
 
 
 class Inventory(Schema):
-    article_id = fields.Number(data_key="art_id")
+    article_id = fields.String(data_key="art_id")
     name = fields.String()
     stock = fields.Number()
 
 
 class ContainArticles(Schema):
-    article_id = fields.Number(data_key="art_id")
+    article_id = fields.String(data_key="art_id")
     amount = fields.Number(data_key="amount_of")
 
 
@@ -31,7 +31,7 @@ class Sale(Schema):
 
 
 class ProductStock(Schema):
-    product_id = fields.Integer()
+    product_id = fields.String()
     name = fields.String()
     stock = fields.Integer()
 

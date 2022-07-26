@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 import pytest
-from sqlalchemy import insert
+from sqlalchemy import insert, asc, desc
 
 from alembic.command import downgrade as alembic_downgrade
 from alembic.command import upgrade as alembic_upgrade
@@ -54,30 +54,30 @@ def set_example_database_products_articles(session):
     session.execute(
         insert(products_table).values(
             [
-                Product(product_id=1, name="Dining Chair"),
-                Product(product_id=2, name="Dinning Table"),
+                Product(product_id="1", name="Dining Chair"),
+                Product(product_id="2", name="Dinning Table"),
             ]
         )
     )
     session.execute(
         insert(articles_table).values(
             [
-                Article(article_id=1, name="leg"),
-                Article(article_id=2, name="screw"),
-                Article(article_id=3, name="seat"),
-                Article(article_id=4, name="table_top"),
+                Article(article_id="1", name="leg"),
+                Article(article_id="2", name="screw"),
+                Article(article_id="3", name="seat"),
+                Article(article_id="4", name="table_top"),
             ]
         )
     )
     session.execute(
         insert(products_articles_table).values(
             [
-                ProductArticle(product_id=1, article_id=1, amount=4),
-                ProductArticle(product_id=1, article_id=2, amount=8),
-                ProductArticle(product_id=1, article_id=3, amount=1),
-                ProductArticle(product_id=2, article_id=1, amount=4),
-                ProductArticle(product_id=2, article_id=2, amount=8),
-                ProductArticle(product_id=2, article_id=4, amount=1),
+                ProductArticle(product_id="1", article_id="1", amount=4),
+                ProductArticle(product_id="1", article_id="2", amount=8),
+                ProductArticle(product_id="1", article_id="3", amount=1),
+                ProductArticle(product_id="2", article_id="1", amount=4),
+                ProductArticle(product_id="2", article_id="2", amount=8),
+                ProductArticle(product_id="2", article_id="4", amount=1),
             ]
         )
     )
@@ -87,48 +87,48 @@ def set_example_database_products_articles(session):
 @pytest.fixture(autouse=False)
 def set_example_database_sale(session, set_example_database_products_articles):
     """Fixture that sets database in with Sale for testing"""
-    sale = Sale(sale_id=uuid.uuid4(), product_id=1, amount=1)
+    sale = Sale(sale_id=uuid.uuid4(), product_id="1", amount=1)
     session.execute(insert(sales_table).values([sale]))
     session.execute(
         insert(stock_updates_table).values(
             [
                 StockUpdate(
-                    article_id=1,
+                    article_id="1",
                     value=10,
                     update_id=uuid.uuid4(),
                     sale_id=None,
                     created_at=datetime.now(),
                 ),
                 StockUpdate(
-                    article_id=2,
+                    article_id="2",
                     value=5,
                     update_id=uuid.uuid4(),
                     sale_id=None,
                     created_at=datetime.now(),
                 ),
                 StockUpdate(
-                    article_id=3,
+                    article_id="3",
                     value=3,
                     update_id=uuid.uuid4(),
                     sale_id=None,
                     created_at=datetime.now(),
                 ),
                 StockUpdate(
-                    article_id=1,
+                    article_id="1",
                     value=-5,
                     update_id=uuid.uuid4(),
                     sale_id=sale["sale_id"],
                     created_at=datetime.now(),
                 ),
                 StockUpdate(
-                    article_id=2,
+                    article_id="2",
                     value=-2,
                     update_id=uuid.uuid4(),
                     sale_id=sale["sale_id"],
                     created_at=datetime.now(),
                 ),
                 StockUpdate(
-                    article_id=3,
+                    article_id="3",
                     value=-2,
                     update_id=uuid.uuid4(),
                     sale_id=sale["sale_id"],

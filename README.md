@@ -4,7 +4,7 @@
 
 * [Flask](https://flask.palletsprojects.com/) for simple HTTP layer
 * [marshmallow](https://flask.palletsprojects.com/) object serialisation/deserialization, defining API schemas
-* [min.io](https://min.io/) block storage used for inventory import
+* [min.io](https://min.io/) blob storage used for inventory import
 * [PostgreSQL](https://www.postgresql.org/) database for storing inventory and handling transactions
 * [SQLAlchemy](https://www.sqlalchemy.org/) used in Python for handling database logic
 

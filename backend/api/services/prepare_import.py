@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+import sys
 import uuid
 from typing import List, Tuple
 
@@ -12,12 +13,14 @@ from api.schemas.internal import (
 )
 
 
-def _hash_name(value: str) -> int:
-    """Helper for hashing product names"""
-    return int.from_bytes(
-        bytes.fromhex(hashlib.md5(value.encode()).hexdigest()[:16]),
-        "little",
-        signed=True,
+def _hash_name(value: str) -> str:
+    """Helper for hashing product to numeric string"""
+    return str(
+        int.from_bytes(
+            bytes.fromhex(hashlib.md5(value.encode()).hexdigest()[:16]),
+            sys.byteorder,
+            signed=True,
+        )
     )
 
 
