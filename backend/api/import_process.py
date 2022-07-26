@@ -6,8 +6,10 @@ import time
 import schedule
 from loguru import logger
 
-from api.persistence.blob import clear_object, get_object_to_import, read_object
-from api.services.inventory import UpdateInventoryException, run_update_inventory
+from api.persistence.blob import (clear_object, get_object_to_import,
+                                  read_object)
+from api.services.inventory import (UpdateInventoryException,
+                                    run_update_inventory)
 
 logger.remove()
 logger.add(sys.stderr, level="INFO")

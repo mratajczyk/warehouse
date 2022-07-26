@@ -1,16 +1,14 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import select, insert
+from sqlalchemy import insert, select
 from sqlalchemy.exc import IntegrityError
 
 from api.persistence.connection import SESSION_FACTORY
-from api.persistence.tables import (
-    products_articles as products_articles_table,
-    stock_updates as stock_updates_table,
-    sales as sales_table,
-)
-from api.schemas.internal import StockUpdate, Sale
+from api.persistence.tables import products_articles as products_articles_table
+from api.persistence.tables import sales as sales_table
+from api.persistence.tables import stock_updates as stock_updates_table
+from api.schemas.internal import Sale, StockUpdate
 
 
 class ProductNotFound(Exception):

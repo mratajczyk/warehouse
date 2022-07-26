@@ -9,12 +9,10 @@ from api.persistence.tables import articles as articles_table
 from api.persistence.tables import products as products_table
 from api.persistence.tables import products_articles as products_articles_table
 from api.persistence.tables import stock_updates as stock_updates_table
-from api.schemas.internal import Article, ImportStockUpdate, Product, ProductArticle
-from api.services.inventory import (
-    UpdateInventoryException,
-    run_update_inventory,
-    update_inventory,
-)
+from api.schemas.internal import (Article, ImportStockUpdate, Product,
+                                  ProductArticle)
+from api.services.inventory import (UpdateInventoryException,
+                                    run_update_inventory, update_inventory)
 
 insert_articles = [
     Article(article_id="1", name="Foo"),

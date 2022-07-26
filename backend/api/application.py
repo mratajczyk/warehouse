@@ -6,9 +6,9 @@ from flask_cors import CORS
 from flask_smorest import Api, Blueprint
 
 from api.config.read import CONFIG
-from api.schemas.external import MessageResponse, Sale, ProductsResponse
+from api.schemas.external import MessageResponse, ProductsResponse, Sale
 from api.services.products import get_products_stock
-from api.services.sales import register_sale, ProductNotFound
+from api.services.sales import ProductNotFound, register_sale
 
 blp = Blueprint("products", "products", url_prefix="/products")
 

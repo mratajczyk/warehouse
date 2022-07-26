@@ -4,13 +4,8 @@ import sys
 import uuid
 from typing import List, Tuple
 
-from api.schemas.internal import (
-    Article,
-    ImportStockUpdate,
-    Product,
-    ProductArticle,
-    StockUpdate,
-)
+from api.schemas.internal import (Article, ImportStockUpdate, Product,
+                                  ProductArticle, StockUpdate)
 
 
 def _hash_name(value: str) -> str:

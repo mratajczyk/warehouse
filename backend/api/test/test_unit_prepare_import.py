@@ -6,7 +6,8 @@ from marshmallow import ValidationError
 
 from api.schemas.internal import ImportStockUpdate
 from api.services.inventory import deserialize_incoming_data
-from api.services.prepare_import import get_stock_updates, transform_import_data
+from api.services.prepare_import import (get_stock_updates,
+                                         transform_import_data)
 
 loaded_import_data = {
     "inventory": [

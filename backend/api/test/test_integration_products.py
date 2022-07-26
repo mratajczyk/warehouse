@@ -6,7 +6,7 @@ from sqlalchemy import insert
 
 from api.persistence.tables import stock_updates as stock_updates_table
 from api.schemas.internal import StockUpdate
-from api.services.products import get_products_stock, ProductStock
+from api.services.products import ProductStock, get_products_stock
 
 
 @pytest.mark.parametrize(

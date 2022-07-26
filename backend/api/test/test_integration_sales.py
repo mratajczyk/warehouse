@@ -6,11 +6,9 @@ from uuid import UUID
 import pytest
 from freezegun import freeze_time
 
-from api.persistence.tables import (
-    sales as sales_table,
-    stock_updates as stock_updates_table,
-)
-from api.services.sales import register_sale, ProductNotFound
+from api.persistence.tables import sales as sales_table
+from api.persistence.tables import stock_updates as stock_updates_table
+from api.services.sales import ProductNotFound, register_sale
 
 
 def test_register_sale(

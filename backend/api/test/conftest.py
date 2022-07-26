@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 import pytest
-from sqlalchemy import insert, asc, desc
+from sqlalchemy import insert
 
 from alembic.command import downgrade as alembic_downgrade
 from alembic.command import upgrade as alembic_upgrade
@@ -10,10 +10,11 @@ from alembic.config import Config as AlembicConfig
 from api.persistence.connection import SESSION_FACTORY
 from api.persistence.tables import articles as articles_table
 from api.persistence.tables import products as products_table
+from api.persistence.tables import products_articles as products_articles_table
 from api.persistence.tables import sales as sales_table
 from api.persistence.tables import stock_updates as stock_updates_table
-from api.persistence.tables import products_articles as products_articles_table
-from api.schemas.internal import Article, Product, Sale, StockUpdate, ProductArticle
+from api.schemas.internal import (Article, Product, ProductArticle, Sale,
+                                  StockUpdate)
 
 alembic_config = AlembicConfig("alembic.ini")
 
