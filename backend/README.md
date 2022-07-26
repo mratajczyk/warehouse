@@ -70,6 +70,8 @@ After doing modifications to database schema in `api/persistence/tables.py`
 alembic revision --autogenerate -m "003-slug-with-changes-summary" 
 ```
 
+Before using `alembic --autogenerate` read and understand its capabilities in [documentation](https://alembic.sqlalchemy.org/en/latest/autogenerate.html)
+
 ## Code formatting 
 
 Python codebase is formatted using [black](https://black.readthedocs.io/en/stable/)
@@ -84,5 +86,6 @@ black api
 
 * ‼️ authentication - both in frontend and backend using JSON Web Token (JWT) Bearer
    Token https://datatracker.ietf.org/doc/html/rfc7523
-* more mature implementation of import -> replace long-running process with event-based implementation that respects ‼️ FIFO
+* more mature implementation of import -> replace long-running process with event-based implementation with FIFO
 * add code formatting to git pre commit hooks
+* better, more resistend to refactoring tests
