@@ -28,7 +28,7 @@ class ProductsById(MethodView):
     @blp.arguments(Sale)
     @blp.doc(responses={HTTPStatus.NOT_FOUND: {"description": INVALID_PRODUCT_MESSAGE}})
     @blp.response(201, MessageResponse)
-    def post(self, sale_data, product_id):
+    def post(self, sale_data: dict, product_id: str):
         """Register a sale of a product"""
         try:
             register_sale(product_id=product_id, amount=sale_data["amount"])
