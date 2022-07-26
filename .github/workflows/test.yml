@@ -1,7 +1,13 @@
 name: 'Backend tests'
 on: push
 jobs:
-  test:
+  test-code-formatting:
+    runs-on: cytopia/black
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run black
+        run: python3 -m black --check --diff backend/api
+  test-application:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
