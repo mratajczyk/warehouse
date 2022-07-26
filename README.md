@@ -29,6 +29,8 @@ Requirement: Docker Compose `1.28.0`
 
 ### Application
 
+Containers are created without defined volumes for database and blob storage.
+
 ```bash
 docker compose --profile app up -d 
 ```
@@ -43,7 +45,7 @@ docker compose --profile backend-tests up --exit-code-from pytest
 ## Demo scenario
 
 1. Run application : `docker compose --profile app up -d`
-2. Navigate to block storage in browser [http://localhost:9001/buckets/warehouse-import-files/browse](http://localhost:9001/buckets/warehouse-import-files/browse) with following credentials
+2. Navigate to blob storage in browser [http://localhost:9001/buckets/warehouse-import-files/browse](http://localhost:9001/buckets/warehouse-import-files/browse) with following credentials
    * user: `minio`
    * pass: `minio-secret`
 3. Add `*.json` files with import to the bucket
