@@ -27,7 +27,7 @@ class MessageResponse(Schema):
 
 
 class Sale(Schema):
-    amount = fields.Integer(validate=validate.Range(min=1, max=999))
+    amount = fields.Integer(validate=validate.Range(min=1, max=999), required=True)
 
 
 class ProductStock(Schema):
