@@ -26,6 +26,10 @@ This monorepo contains following components:
 No need to configure anything for local deployment, everything runs with reasonable
 defaults.
 
+## Contributing
+
+This repository follows [semantic commit messages](https://sparkbox.com/foundry/semantic_commit_messages) pattern.
+
 ## Running 
 
 Requirement: Docker Compose `1.28.0` 
