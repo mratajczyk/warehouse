@@ -77,3 +77,13 @@ services:
       - db-app
     profiles:
       - app
+  ui:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        BASE_API_URL: http://localhost:5000
+    ports:
+      - "8081:80"
+    profiles:
+      - app

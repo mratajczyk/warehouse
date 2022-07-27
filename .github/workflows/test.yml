@@ -1,7 +1,7 @@
-name: 'Backend tests'
+name: 'Run application tests'
 on: push
 jobs:
-  test-application:
+  backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
