@@ -39,6 +39,7 @@ Requirement: Docker Compose `1.28.0`
 Containers are created without defined volumes for database and blob storage.
 
 ```bash
+docker compose build api import-process ui
 docker compose --profile app up -d 
 ```
 

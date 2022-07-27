@@ -29,6 +29,8 @@ services:
       - type: bind
         source: ./frontend/tests/api-mock.json
         target: /data
+    profiles:
+      - frontend-tests
   minio:
     image: bitnami/minio:2022.7.17-debian-11-r1
     ports:
