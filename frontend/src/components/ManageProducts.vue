@@ -74,7 +74,7 @@ export default {
       this.saleItem = product_id;
     },
     stopSaleDialog() {
-      this.saleItem = null
+      this.saleItem = null;
     },
     showError(error_text) {
       this.failedOperation = error_text;

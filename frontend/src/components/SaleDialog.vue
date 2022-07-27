@@ -7,9 +7,7 @@
   >
     <template>
       <v-card>
-        <v-toolbar color="primary" dark
-          >Register sale #{{ itemId }}
-        </v-toolbar>
+        <v-toolbar color="primary" dark>Register sale #{{ itemId }} </v-toolbar>
         <v-card-text>
           <v-text-field
             label="Amount"
