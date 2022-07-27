@@ -47,7 +47,7 @@ docker compose --profile backend-tests up --exit-code-from pytest
 
 ## Demo scenario
 
-1. Run application : `docker compose --profile app up -d`
+1. Run application : `docker compose --profile app up -d` and wait for the services to initiate
 2. Navigate to blob storage in browser [http://localhost:9001/buckets/warehouse-import-files/browse](http://localhost:9001/buckets/warehouse-import-files/browse) with following credentials
    * user: `minio`
    * pass: `minio-secret`
