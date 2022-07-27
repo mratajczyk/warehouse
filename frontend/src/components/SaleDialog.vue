@@ -8,7 +8,7 @@
     <template v-slot:default="dialog">
       <v-card>
         <v-toolbar color="primary" dark
-          >Register sale #{{ item.product_id }}
+          >Register sale #{{ itemId }}
         </v-toolbar>
         <v-card-text>
           <v-text-field
@@ -28,7 +28,7 @@
             :loading="registerSalePending"
             :disabled="registerSalePending"
             color="secondary"
-            @click="$emit('register', item.product_id, saleAmount)"
+            @click="$emit('register', itemId, saleAmount)"
           >
             Confirm
           </v-btn>
@@ -44,15 +44,15 @@ export default {
   name: "SaleDialog",
   data: () => ({
     saleAmount: null,
-    show: false,
+    show: true,
   }),
   props: {
     registerSalePending: {
       type: Boolean,
       default: false,
     },
-    item: {
-      type: Object,
+    itemId: {
+      type: String,
     },
   },
   mounted() {

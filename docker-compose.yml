@@ -73,7 +73,6 @@ services:
       CONFIG_DATABASE_HOST: db-app
       SKIP_MIGRATIONS: 1
     depends_on:
-      - api
       - db-app
     profiles:
       - app

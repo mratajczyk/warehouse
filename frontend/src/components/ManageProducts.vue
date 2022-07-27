@@ -1,7 +1,8 @@
 <template>
   <div>
     <SaleDialog
-      :item="saleItem"
+      v-if="saleItem"
+      :item-id="saleItem"
       :register-sale-pending="registerSalePending"
       @register="registerSale"
     />
@@ -10,7 +11,6 @@
       <v-divider class="mx-4"></v-divider>
       <AlertError :failed-operation="failedOperation" />
       <AlertSuccess :sale-confirmed="saleConfirmed" />
-<!--      <ProductSearch :searchc="search" />-->
       <v-data-table
         :headers="headers"
         :items="products"
@@ -21,7 +21,13 @@
       >
         <template v-slot:[`item.actions`]="{ item }">
           <v-row justify="end">
-            <v-btn color="primary" small class="mr-5" @click="startSaleDialog(item)">SALE</v-btn>
+            <v-btn
+              color="primary"
+              small
+              class="mr-5"
+              @click="startSaleDialog(item.product_id)"
+              >SALE</v-btn
+            >
           </v-row>
         </template>
       </v-data-table>
@@ -63,11 +69,11 @@ export default {
     this.loadStock();
   },
   methods: {
-    startSaleDialog(item) {
-      this.saleItem = item
+    startSaleDialog(product_id) {
+      this.saleItem = product_id;
     },
     stopSaleDialog() {
-      // this.saleItem = null
+      this.saleItem = null
     },
     showError(error_text) {
       this.failedOperation = error_text;
@@ -110,7 +116,7 @@ export default {
         .finally(() => {
           setTimeout(() => {
             {
-              this.stopSaleDialog()
+              this.stopSaleDialog();
               this.stopSalePending();
             }
           }, 1000);
