@@ -20,7 +20,7 @@ jobs:
       - name: Start Mocked API
         run: docker-compose up -d mock-api
       - name: Install dependencies
-        run: npm ci
+        run: npm install
         working-directory: ./frontend
       - name: Run Nightwatch tests
         run: vue-cli-service test:e2e
