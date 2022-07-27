@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+    class="sale-dialog"
     v-model="show"
     transition="dialog-top-transition"
     max-width="600"
@@ -22,7 +23,7 @@
           <v-btn text @click="$emit('cancel_dialog')">Cancel</v-btn>
           <v-spacer></v-spacer>
           <v-btn
-            class="ma-2"
+            class="ma-2 confirm-button"
             :loading="registerSalePending"
             :disabled="registerSalePending"
             color="secondary"

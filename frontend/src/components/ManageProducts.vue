@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="manage-products">
     <SaleDialog
       v-if="saleItem"
       :item-id="saleItem"
@@ -25,7 +25,7 @@
             <v-btn
               color="primary"
               small
-              class="mr-5"
+              class="mr-5 sale-button"
               @click="startSaleDialog(item.product_id)"
               >SALE</v-btn
             >
@@ -129,6 +129,7 @@ export default {
         .get(`/products`)
         .then((response) => {
           this.products = response.data.products;
+          console.log(response);
           this.clearError();
         })
         .catch(() => {

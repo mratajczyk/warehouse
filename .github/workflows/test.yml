@@ -9,3 +9,26 @@ jobs:
         run: docker compose --profile backend-tests build
       - name: Run backend tests
         run: docker compose --profile backend-tests up --exit-code-from pytest
+  frontend:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: npm ci
+      - name: Start Mocked API
+        run: docker compose --profile backend-tests up --exit-code-from pytest
+      - name: Run Nightwatch tests
+        continue-on-error: true
+        run: xvfb-run --auto-servernum npm test -- --env chrome
+      - name: "Publish test results"
+        uses: peaceiris/actions-gh-pages@v3.7.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: './frontend_tests_output/nightwatch-html-report'
+          keep_files: true
+          user_name: <user-name>
+          user_email: <user-email>

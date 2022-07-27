@@ -88,4 +88,4 @@ black api
    Token https://datatracker.ietf.org/doc/html/rfc7523
 * more mature implementation of import -> replace long-running process with event-based implementation with FIFO
 * add code formatting to git pre commit hooks
-* better, more resistend to refactoring tests
+* better, more resilient to refactoring tests

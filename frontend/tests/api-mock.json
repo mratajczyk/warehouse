@@ -1,0 +1,192 @@
+{
+  "uuid": "2f7f89f8-6678-4bff-b1bd-935435d2265c",
+  "lastMigration": 20,
+  "name": "Warehouse API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 5000,
+  "hostname": "0.0.0.0",
+  "routes": [
+    {
+      "uuid": "201b8576-e9eb-4019-a8f0-2a7f507ba130",
+      "documentation": "Get products stock",
+      "method": "get",
+      "endpoint": "products/",
+      "responses": [
+        {
+          "uuid": "17fbb8d3-2c09-4870-8e94-4ab4115b9930",
+          "body": "{\n  \"products\": [\n    {\n      \"stock\": 10,\n      \"product_id\": \"1111\",\n      \"name\": \"Product 1\"\n    },\n    {\n      \"stock\": 20,\n      \"product_id\": \"2222\",\n      \"name\": \"Product 2\"\n    },\n    {\n      \"stock\": 30,\n      \"product_id\": \"3333\",\n      \"name\": \"Product 3\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "OK",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "372046ab-f622-4720-ae43-d217e3c21086",
+          "body": "{\n  \"code\": {{faker 'datatype.number'}},\n  \"errors\": {},\n  \"message\": \"\",\n  \"status\": \"\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Default error response",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "72af7b19-327e-46ed-8a08-b57bf07cbf25",
+      "documentation": "Register a sale of a product",
+      "method": "post",
+      "endpoint": "products/:product_id/sale",
+      "responses": [
+        {
+          "uuid": "87c43e25-c447-4ab3-b27b-6a80994b1fd0",
+          "body": "{\n  \"message\": \"OK\"\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Created",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "e5982c25-17ae-4565-a618-db3be8a91073",
+          "body": "",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "Invalid Product",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "f656a22c-54ea-4982-8073-5414133d007b",
+          "body": "{\n  \"code\": {{faker 'datatype.number'}},\n  \"errors\": {},\n  \"message\": \"\",\n  \"status\": \"\"\n}",
+          "latency": 0,
+          "statusCode": 422,
+          "label": "Unprocessable Entity",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "fb3cf445-d109-4ab7-b5c4-54f36e269452",
+          "body": "{\n  \"code\": {{faker 'datatype.number'}},\n  \"errors\": {},\n  \"message\": \"\",\n  \"status\": \"\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Default error response",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ]
+}

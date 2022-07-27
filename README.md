@@ -48,6 +48,16 @@ docker compose --profile app up -d
 docker compose --profile backend-tests up --exit-code-from pytest
 ```
 
+### Front-end E2E tests
+
+Run to run E2E tests remember to run api mock.
+
+```bash
+docker compose up mock-api -d 
+cd frontend && vue-cli-service test:e2e --url http://localhost:8080
+docker compose down mock-api 
+```
+
 
 ## Demo scenario
 

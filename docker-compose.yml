@@ -20,6 +20,15 @@ services:
       - db-test
     profiles:
       - backend-tests
+  mock-api:
+    image: mockoon/cli:1.6.2
+    command: -c -t -d data
+    ports:
+      - "5000:5000"
+    volumes:
+      - type: bind
+        source: ./frontend/tests/api-mock.json
+        target: /data
   minio:
     image: bitnami/minio:2022.7.17-debian-11-r1
     ports:
@@ -67,7 +76,7 @@ services:
     build:
       context: backend
       dockerfile: deployment/production/Dockerfile
-    entrypoint: ["poetry", "run", "python", "api/import_process.py"]
+    entrypoint: [ "poetry", "run", "python", "api/import_process.py" ]
     environment:
       CONFIG_BLOB_STORAGE_HOST: minio
       CONFIG_DATABASE_HOST: db-app
