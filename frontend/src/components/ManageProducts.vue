@@ -5,6 +5,7 @@
       :item-id="saleItem"
       :register-sale-pending="registerSalePending"
       @register="registerSale"
+      @cancel_dialog="stopSaleDialog"
     />
     <v-card class="mx-auto">
       <v-card-title class="display-1">📦 Warehouse Application</v-card-title>

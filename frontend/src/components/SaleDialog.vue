@@ -5,7 +5,7 @@
     max-width="600"
     :retain-focus="false"
   >
-    <template v-slot:default="dialog">
+    <template>
       <v-card>
         <v-toolbar color="primary" dark
           >Register sale #{{ itemId }}
@@ -21,7 +21,7 @@
           />
         </v-card-text>
         <v-card-actions>
-          <v-btn text @click="dialog.value = false">Cancel</v-btn>
+          <v-btn text @click="$emit('cancel_dialog')">Cancel</v-btn>
           <v-spacer></v-spacer>
           <v-btn
             class="ma-2"
