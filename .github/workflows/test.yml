@@ -22,6 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: ./frontend
-      - name: Run Nightwatch tests
-        run: vue-cli-service test:e2e
+      - name: Run tests
+        run: npm run test:e2e
         working-directory: ./frontend
