@@ -7,12 +7,15 @@
 * [min.io](https://min.io/) blob storage used for inventory import
 * [PostgreSQL](https://www.postgresql.org/) database for storing inventory and handling transactions
 * [SQLAlchemy](https://www.sqlalchemy.org/) used in Python for handling database logic
+* [Vue,js](https://vuejs.org/) front-end framework
+* [Vuetify](https://vuetifyjs.com/en/) UI Material Design Framework
 
 ## Components
 
 This monorepo contains following components:
 
 * [backend](backend/README.md)
+* [frontend](frontend/README.md)
 
 ## High level architecture and data flow
 
@@ -53,3 +56,4 @@ docker compose --profile backend-tests up --exit-code-from pytest
    1. retrieve initial Products stock [http://localhost:8080/#/products/post_products__product_id__sale](http://localhost:8080/#/products/post_products__product_id__sale)
    2. register sale using example payload [http://localhost:8080/#/products/post_products__product_id__sale](http://localhost:8080/#/products/post_products__product_id__sale)
    3. retrieve current Products stock
+5. Navigate to Warehouse UI: [http://localhost:8081/](http://localhost:8081/)
